@@ -9,7 +9,8 @@
     "build": "mastra build",
     "start": "mastra start",
     "server": "tsx src/server.ts",
-    "eval": "tsx src/eval.ts"
+    "eval": "tsx src/eval.ts",
+    "ingest": "tsx src/mastra/scripts/ingest.ts"
   },
   "keywords": [],
   "author": "",
