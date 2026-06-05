@@ -50,7 +50,7 @@ app.get("/", (_, res) => {
   res.send("Tara Finance Agent Running");
 });
 
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
