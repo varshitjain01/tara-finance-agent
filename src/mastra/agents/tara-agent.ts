@@ -1,11 +1,12 @@
 import { Agent } from "@mastra/core/agent";
-import { Memory } from "@mastra/memory";
+
 
 import { transactionTool } from "../tools/transactionTool";
 import { portfolioTool } from "../tools/portfolioTool";
 import { merchantTool } from "../tools/merchantTool";
 import { topSpendingTool } from "../tools/topSpendingTool";
 import {fundReturnTool} from "../tools/fundReturnTool";
+import {totalSpendingTool} from "../tools/totalSpendingTool";
 
 export const taraAgent = new Agent({
   id: "tara-agent",
@@ -31,6 +32,17 @@ Rules:
 - Use merchantTool for merchant-specific spending questions.
 - Use topSpendingTool for top spending and highest expense questions.
 - Use fundReturnTool for investment performance and return questions.
+For date-based spending questions, use transactionTool with startDate and endDate.
+For total spending questions, use totalSpendingTool.
+
+If the user says:
+"Ignore transfers"
+or
+"Exclude transfers"
+
+set excludeTransfers=true.
+All monetary values are in INR (₹).
+Never display USD ($) unless explicitly present in the data.
 `,
 
   model: "google/gemini-2.5-flash",
@@ -41,7 +53,8 @@ Rules:
      merchantTool,
      topSpendingTool,
         fundReturnTool,
+        totalSpendingTool,
   },
 
-  memory: new Memory(),
+ 
 });
