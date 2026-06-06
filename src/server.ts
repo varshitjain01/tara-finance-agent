@@ -1,4 +1,5 @@
 import express from "express";
+import crypto from "crypto";
 import { taraAgent } from "./mastra/agents/tara-agent";
 
 const app = express();
@@ -6,12 +7,14 @@ const app = express();
 app.use(express.json());
 
 app.post("/ask", async (req, res) => {
+  const requestId = crypto.randomUUID();
   const start = Date.now();
 
   try {
     const { question } = req.body;
 
     console.log("\n========================");
+    console.log("Request ID:", requestId);
     console.log("Question:", question);
 
     if (!question) {
@@ -35,6 +38,7 @@ app.post("/ask", async (req, res) => {
   } catch (error) {
     const latency = Date.now() - start;
 
+    console.log("Request ID:", requestId);
     console.log("Status: Failed");
     console.log("Latency:", latency, "ms");
     console.error(error);

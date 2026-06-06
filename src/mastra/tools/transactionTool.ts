@@ -4,13 +4,14 @@ import { pool } from "../db/postgres";
 
 export const transactionTool = createTool({
   id: "transaction-tool",
+
   description:
     "Query transactions by category with optional date filtering",
 
   inputSchema: z.object({
     category: z.string(),
-    startDate: z.string().optional(),
-    endDate: z.string().optional(),
+    startDate: z.string().nullish(),
+    endDate: z.string().nullish(),
   }),
 
   execute: async ({ category, startDate, endDate }) => {

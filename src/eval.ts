@@ -7,6 +7,10 @@ const tests = [
   "How much did I spend on food in March 2025?",
   "Ignore transfers. What was my total spending?",
   "What are my top spending categories?",
+  "Do I have any data for rent in April 2025?",
+  "How much did I spend at Netflix?",
+  "What is my portfolio value today?",
+  "Show my spending at Apollo Pharmacy.",
 ];
 
 async function run() {
