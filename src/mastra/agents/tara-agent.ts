@@ -78,7 +78,7 @@ Data Handling:
 - Do not assume that a value of 0 means data exists. If no records are found, say so explicitly.
 `,
 
-  model: "groq/llama-3.3-70b-versatile",
+  model: "google/gemini-2.5-flash",
 
   tools: {
     transactionTool,
