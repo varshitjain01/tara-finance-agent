@@ -4,7 +4,7 @@
 
 The objective of this project is to build a finance research agent capable of answering natural language financial questions using structured financial data.
 
-The solution uses PostgreSQL as the source of truth and Mastra as the AI orchestration framework.
+The solution uses PostgreSQL (Neon) as the source of truth, Mastra as the AI orchestration framework, and Groq as the language model provider.
 
 The architecture ensures that responses are generated from database queries rather than model assumptions.
 
@@ -13,6 +13,10 @@ The architecture ensures that responses are generated from database queries rath
 ## Architecture
 
 User Query
+
+↓
+
+REST API (/ask)
 
 ↓
 
@@ -66,11 +70,13 @@ The Tara agent acts as the orchestration layer.
 Responsibilities:
 
 * Understand user intent
-* Select appropriate tool
-* Execute tool
-* Present result
+* Select the appropriate tool
+* Execute the tool
+* Present the result
 
 The agent is explicitly instructed not to fabricate financial information and to rely on tools for financial calculations.
+
+The agent is also restricted to financial queries and politely rejects out-of-scope requests such as programming, weather, and general knowledge questions.
 
 ---
 
@@ -81,6 +87,7 @@ The agent is explicitly instructed not to fabricate financial information and to
 Purpose:
 
 * Category spending analysis
+* Date-filtered spending analysis
 
 Returns:
 
@@ -98,7 +105,7 @@ Purpose:
 Returns:
 
 * Transaction count
-* Total merchant spend
+* Total merchant spending
 
 ---
 
@@ -110,8 +117,9 @@ Purpose:
 
 Method:
 
-* Uses latest NAV value for each holding
+* Retrieves the latest NAV for each fund
 * Multiplies NAV by units held
+* Aggregates portfolio value
 
 ---
 
@@ -124,7 +132,7 @@ Purpose:
 Returns:
 
 * Top spending categories
-* Top spending merchants
+* Highest spending areas
 
 ---
 
@@ -138,6 +146,19 @@ Method:
 
 * Compares purchase NAV with latest NAV
 * Calculates percentage return
+
+---
+
+### totalSpendingTool
+
+Purpose:
+
+* Overall spending analysis
+
+Supports:
+
+* Transfer exclusion
+* Total spending calculations
 
 ---
 
@@ -164,6 +185,35 @@ Implemented safeguards include:
 * Database connection validation
 * Environment variable management
 * SQL parameterization
+* Out-of-scope query handling
+
+---
+
+## Evaluation Strategy
+
+An evaluation suite was implemented in eval.ts.
+
+The suite validates:
+
+* Portfolio valuation
+* Category spending
+* Merchant spending
+* Fund performance
+* Date-based filtering
+* Transfer exclusion
+* Top spending categories
+
+The final evaluation successfully passed all test cases.
+
+---
+
+## Deployment
+
+The application is deployed on Render.
+
+The PostgreSQL database is hosted on Neon and acts as the source of truth for all financial data.
+
+The service is exposed through a REST API endpoint and can be queried using HTTP requests.
 
 ---
 
@@ -183,6 +233,7 @@ Implemented safeguards include:
 * Simple relational schema
 * Tool-specific SQL queries
 * Fast implementation
+* Lightweight evaluation framework
 
 ### Deferred
 
@@ -196,9 +247,9 @@ Implemented safeguards include:
 
 ## Future Enhancements
 
-* Date range filtering
-* Portfolio gain/loss reports
+* Portfolio gain/loss reporting
 * Monthly spending dashboards
-* REST API integration
-* Deployment monitoring
-* Scheduled financial insights
+* Budget tracking and alerts
+* Scheduled financial summaries
+* Advanced investment analytics
+* Monitoring and observability dashboards

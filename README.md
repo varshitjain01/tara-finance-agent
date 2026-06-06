@@ -2,9 +2,11 @@
 
 ## Overview
 
-Finance Research Agent (Tara) is an AI-powered financial assistant built using Mastra, PostgreSQL, and Gemini. The system enables users to query personal financial data using natural language and receive accurate, database-backed responses.
+Finance Research Agent (Tara) is an AI-powered financial assistant built using Mastra, PostgreSQL (Neon), and Groq.
 
-The application ingests transaction, mutual fund, NAV history, and portfolio holding data into PostgreSQL and uses AI tools to perform financial analysis.
+The system enables users to query financial data using natural language and receive accurate, database-backed responses.
+
+The application ingests transaction, mutual fund, NAV history, and portfolio holding data into PostgreSQL and uses AI-powered tools to perform financial analysis.
 
 ---
 
@@ -14,7 +16,7 @@ The application ingests transaction, mutual fund, NAV history, and portfolio hol
 
 * Spending by category
 * Transaction count by category
-* Category-wise expenditure insights
+* Date-based spending analysis
 
 ### Merchant Analysis
 
@@ -29,12 +31,13 @@ The application ingests transaction, mutual fund, NAV history, and portfolio hol
 ### Investment Performance
 
 * Fund return calculation
-* Best performing fund identification
+* Best-performing fund identification
 
 ### Spending Insights
 
 * Top spending categories
-* Top spending merchants
+* Transfer exclusion support
+* Total spending analysis
 
 ---
 
@@ -42,53 +45,10 @@ The application ingests transaction, mutual fund, NAV history, and portfolio hol
 
 * TypeScript
 * Mastra Framework
-* PostgreSQL
-* Google Gemini
+* PostgreSQL (Neon)
+* Groq (Llama 3.3 70B Versatile)
 * Node.js
-
----
-
-## Database Schema
-
-### transactions
-
-| Column   | Type         |
-| -------- | ------------ |
-| id       | VARCHAR(50)  |
-| date     | DATE         |
-| merchant | TEXT         |
-| category | VARCHAR(100) |
-| amount   | DECIMAL      |
-| currency | VARCHAR(10)  |
-| memo     | TEXT         |
-
-### funds
-
-| Column   | Type         |
-| -------- | ------------ |
-| id       | VARCHAR(50)  |
-| name     | TEXT         |
-| category | VARCHAR(100) |
-
-### fund_nav
-
-| Column    | Type        |
-| --------- | ----------- |
-| id        | SERIAL      |
-| fund_id   | VARCHAR(50) |
-| nav_date  | DATE        |
-| nav_value | DECIMAL     |
-
-### holdings
-
-| Column        | Type        |
-| ------------- | ----------- |
-| id            | SERIAL      |
-| fund_id       | VARCHAR(50) |
-| fund_name     | TEXT        |
-| units         | DECIMAL     |
-| purchase_date | DATE        |
-| purchase_nav  | DECIMAL     |
+* Render
 
 ---
 
@@ -120,7 +80,7 @@ Example:
 
 ### topSpendingTool
 
-Returns highest spending categories and merchants.
+Returns highest spending categories.
 
 Example:
 
@@ -134,6 +94,14 @@ Example:
 
 * Which fund performed best?
 
+### totalSpendingTool
+
+Calculates overall spending and supports transfer exclusion.
+
+Example:
+
+* Ignore transfers. What was my total spending?
+
 ---
 
 ## Setup
@@ -146,24 +114,50 @@ npm install
 
 ### Configure Environment
 
-Create `.env`
+Create a `.env` file:
 
 ```env
-DATABASE_URL=postgresql://postgres:<password>@localhost:5432/provue_tara
-
-GOOGLE_API_KEY=<api_key>
-GOOGLE_GENERATIVE_AI_API_KEY=<api_key>
+DATABASE_URL=<your_neon_connection_string>
+GROQ_API_KEY=<your_groq_api_key>
 ```
 
-### Start Application
+### Load Data
 
 ```bash
-npm run dev
+npm run ingest
 ```
 
-Open:
+### Run API Server
 
-http://localhost:4111
+```bash
+npm run server
+```
+
+Server:
+
+```text
+http://localhost:3000
+```
+
+API Endpoint:
+
+```text
+POST /ask
+```
+
+### Run Evaluation
+
+```bash
+npm run eval
+```
+
+---
+
+## Deployment
+
+Render URL:
+
+https://tara-finance-agent-ky81.onrender.com
 
 ---
 
@@ -174,14 +168,15 @@ http://localhost:4111
 * Show my spending at Apollo.
 * What are my top spending categories?
 * Which fund performed best?
+* Ignore transfers. What was my total spending?
 
 ---
 
 ## Future Improvements
 
-* Date range filtering
-* Portfolio gain/loss tracking
-* Monthly spending trends
-* Budget monitoring
-* Transaction search
-* REST API endpoints
+* Portfolio gain/loss reporting
+* Monthly spending dashboards
+* Budget tracking and alerts
+* Scheduled financial summaries
+* Advanced investment analytics
+* Monitoring and observability dashboards

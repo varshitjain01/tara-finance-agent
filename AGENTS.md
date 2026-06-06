@@ -1,15 +1,43 @@
 # AGENTS.md
 
-## CRITICAL: Load `mastra` skill first
+## Critical Requirement
 
-Load the `mastra` skill BEFORE any Mastra work. Never rely on cached knowledge — APIs change between versions.
+Always load the `mastra` skill before performing any Mastra-related work.
 
-## Rules
+Do not rely on cached knowledge because Mastra APIs and patterns may change between versions.
 
-- Register all agents, tools, workflows, and scorers in `src/mastra/index.ts`
-- Use the `dev` and `build` scripts from `package.json` instead of running `mastra dev` / `mastra build` directly
+---
+
+## Development Rules
+
+* Register all agents in `src/mastra/index.ts`
+
+* Register all tools in `src/mastra/index.ts`
+
+* Register all workflows in `src/mastra/index.ts`
+
+* Register all scorers in `src/mastra/index.ts`
+
+* Use the scripts defined in `package.json`:
+
+  * `npm run dev`
+  * `npm run build`
+
+* Do not run:
+
+  * `mastra dev`
+  * `mastra build`
+
+directly from the command line.
+
+---
 
 ## Resources
 
-- [Mastra Documentation](https://mastra.ai/llms.txt)
-- [Skills Discovery](https://mastra.ai/.well-known/skills/index.json)
+### Mastra Documentation
+
+https://mastra.ai/llms.txt
+
+### Skills Discovery
+
+https://mastra.ai/.well-known/skills/index.json
